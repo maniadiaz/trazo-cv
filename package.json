@@ -1,6 +1,6 @@
 {
   "name": "trazo-cv",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": true,
   "description": "App de escritorio para crear CV (cronológico, funcional, mixto, Harvard, Cambridge) con exportación a PDF. Electron + React + TypeScript.",
   "main": "electron/main.cjs",

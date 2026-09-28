@@ -83,7 +83,10 @@ ipcMain.handle("cv:export-pdf", async (event, fileName) => {
     defaultPath: path.join(app.getPath("documents"), `${safeName}.pdf`),
     filters: [{ name: "PDF", extensions: ["pdf"] }],
   });
-  if (canceled || !filePath) return null;
+  if (canceled || !filePath) {
+    win?.webContents.focus();
+    return null;
+  }
 
   const pdf = await event.sender.printToPDF({
     pageSize: "A4",
@@ -91,6 +94,7 @@ ipcMain.handle("cv:export-pdf", async (event, fileName) => {
     preferCSSPageSize: true,
   });
   await fs.writeFile(filePath, pdf);
+  win?.webContents.focus();
   return filePath;
 });
 
@@ -116,6 +120,10 @@ function createWindow() {
   });
 
   win.once("ready-to-show", () => win.show());
+
+  // Tras un diálogo nativo, Electron en Windows puede dejar la página sin recibir texto
+  // (solo funciona Retroceso). Al recuperar el foco de la ventana se lo damos a la página.
+  win.on("focus", () => win.webContents.focus());
 
   // Los enlaces (LinkedIn, GitHub…) se abren en el navegador, nunca dentro de la app.
   win.webContents.setWindowOpenHandler(({ url }) => {

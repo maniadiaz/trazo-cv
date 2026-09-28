@@ -6,6 +6,7 @@ import { templateName } from "../templates";
 import AnimatedTitle, { blurIn } from "../components/AnimatedTitle";
 import { Button, IconButton } from "../components/ui";
 import { CvThumb } from "../cv/Preview";
+import { useConfirm } from "../components/Confirm";
 
 const dateFmt = new Intl.DateTimeFormat("es", { day: "numeric", month: "short", year: "numeric" });
 
@@ -24,8 +25,15 @@ export default function Home({
   const profileIncomplete = !profile.name.trim() || !profile.email.trim();
   const sorted = [...cvs].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
 
-  const confirmDelete = (cv: Cv) => {
-    if (window.confirm(`¿Eliminar «${cv.name}»? No se puede deshacer.`)) onDelete(cv.id);
+  const confirm = useConfirm();
+  const confirmDelete = async (cv: Cv) => {
+    const ok = await confirm({
+      title: "¿Eliminar este CV?",
+      message: `«${cv.name}» se borrará y no se puede deshacer.`,
+      confirmLabel: "Eliminar",
+      danger: true,
+    });
+    if (ok) onDelete(cv.id);
   };
 
   return (

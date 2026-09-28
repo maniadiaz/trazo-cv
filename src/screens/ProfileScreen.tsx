@@ -6,6 +6,7 @@ import type { View } from "../App";
 import { uid } from "../lib/factory";
 import { prettyUrl } from "../cv/CvDocument";
 import AnimatedTitle, { blurIn } from "../components/AnimatedTitle";
+import { useConfirm } from "../components/Confirm";
 import { Button, Glass, IconButton, TextInput, cn, fieldBase } from "../components/ui";
 
 const LINK_PRESETS = [
@@ -56,8 +57,18 @@ export default function ProfileScreen({
     if (firstRun) go({ name: "home" });
   };
 
-  const back = () => {
-    if (dirty && !window.confirm("Tienes cambios sin guardar. ¿Salir de todos modos?")) return;
+  const confirm = useConfirm();
+  const back = async () => {
+    if (
+      dirty &&
+      !(await confirm({
+        title: "¿Salir sin guardar?",
+        message: "Tienes cambios en tus datos que todavía no has guardado.",
+        confirmLabel: "Salir sin guardar",
+        danger: true,
+      }))
+    )
+      return;
     go({ name: "home" });
   };
 

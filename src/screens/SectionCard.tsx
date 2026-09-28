@@ -13,6 +13,7 @@ import {
 } from "../lib/factory";
 import { Button, Checkbox, IconButton, TextArea, TextInput, cn } from "../components/ui";
 import BulletEditor from "../components/BulletEditor";
+import { useConfirm } from "../components/Confirm";
 
 type Props = {
   section: Section;
@@ -26,8 +27,15 @@ type Props = {
 export default function SectionCard({ section, index, count, onChange, onMove, onRemove }: Props) {
   const [open, setOpen] = useState(true);
 
-  const remove = () => {
-    if (window.confirm(`¿Quitar la sección «${section.title || "Sin título"}»?`)) onRemove();
+  const confirm = useConfirm();
+  const remove = async () => {
+    const ok = await confirm({
+      title: "¿Quitar esta sección?",
+      message: `«${section.title || "Sin título"}» y todo su contenido se quitarán del CV.`,
+      confirmLabel: "Quitar",
+      danger: true,
+    });
+    if (ok) onRemove();
   };
 
   return (

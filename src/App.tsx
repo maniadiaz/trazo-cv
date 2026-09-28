@@ -7,6 +7,7 @@ import Home from "./screens/Home";
 import ProfileScreen from "./screens/ProfileScreen";
 import Wizard from "./screens/Wizard";
 import Editor from "./screens/Editor";
+import { ConfirmProvider } from "./components/Confirm";
 
 export type View = { name: "home" } | { name: "profile"; firstRun?: boolean } | { name: "wizard" } | { name: "editor"; id: string };
 
@@ -86,6 +87,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <ConfirmProvider>
       <AnimatePresence mode="wait">
         <motion.div
           key={view.name === "editor" ? `editor-${view.id}` : view.name}
@@ -98,6 +100,7 @@ export default function App() {
           {screen}
         </motion.div>
       </AnimatePresence>
+      </ConfirmProvider>
     </MotionConfig>
   );
 }
