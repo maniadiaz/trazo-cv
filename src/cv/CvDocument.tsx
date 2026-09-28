@@ -8,6 +8,7 @@ import type {
   Layout,
   ListItem,
   Profile,
+  ReferenceItem,
   Section,
   SkillGroup,
 } from "../types";
@@ -251,6 +252,26 @@ function List({ items, sidebar }: { items: ListItem[]; sidebar: boolean }) {
   );
 }
 
+const telHref = (phone: string) => `tel:${phone.replace(/[^\d+]/g, "")}`;
+
+function References({ items, sidebar }: { items: ReferenceItem[]; sidebar: boolean }) {
+  return (
+    <div className={sidebar ? "cv-refs cv-refs-stack" : "cv-refs"}>
+      {items.filter(isFilled).map((r) => (
+        <div key={r.id} className="cv-ref">
+          {r.name && <strong>{r.name}</strong>}
+          {r.position && <div className="cv-sub">{r.position}</div>}
+          {r.phone && (
+            <a className="cv-ref-phone" href={telHref(r.phone)}>
+              {r.phone}
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function SectionBody({ section, layout, sidebar }: { section: Section; layout: Layout; sidebar: boolean }) {
   const indent = (node: ReactNode) => (layout === "cambridge" && !sidebar ? <div className="cv-indent">{node}</div> : node);
   switch (section.kind) {
@@ -295,6 +316,8 @@ function SectionBody({ section, layout, sidebar }: { section: Section; layout: L
       return indent(<Competencies items={section.items} />);
     case "list":
       return indent(<List items={section.items} sidebar={sidebar} />);
+    case "references":
+      return indent(<References items={section.items} sidebar={sidebar} />);
   }
 }
 
@@ -332,7 +355,7 @@ function contactItems(cv: Cv, profile: Profile): ContactItem[] {
   if (cv.contact.email && profile.email.trim())
     items.push({ key: "email", text: profile.email.trim(), href: `mailto:${profile.email.trim()}` });
   if (cv.contact.phone && profile.phone.trim())
-    items.push({ key: "phone", text: profile.phone.trim(), href: `tel:${profile.phone.replace(/[^\d+]/g, "")}` });
+    items.push({ key: "phone", text: profile.phone.trim(), href: telHref(profile.phone) });
   if (cv.contact.location && profile.location.trim()) items.push({ key: "location", text: profile.location.trim() });
   for (const link of profile.links) {
     if (!cv.contact.linkIds.includes(link.id) || !link.url.trim()) continue;

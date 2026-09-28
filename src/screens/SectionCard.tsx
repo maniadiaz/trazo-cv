@@ -9,6 +9,7 @@ import {
   newEntry,
   newExperience,
   newListItem,
+  newReference,
   newSkillGroup,
 } from "../lib/factory";
 import { Button, Checkbox, IconButton, TextArea, TextInput, cn } from "../components/ui";
@@ -326,6 +327,37 @@ function SectionFields({ section, onChange }: { section: Section; onChange: (s: 
           addLabel="Añadir línea"
           itemLabel={() => ""}
           render={(it, set) => <TextInput value={it.text} onChange={(e) => set({ text: e.target.value })} aria-label="Texto" />}
+        />
+      );
+
+    case "references":
+      return (
+        <Items
+          items={section.items}
+          onChange={(items) => onChange({ ...section, items })}
+          create={newReference}
+          addLabel="Añadir referencia"
+          itemLabel={(it) => it.name}
+          render={(it, set) => (
+            <div className="flex flex-col gap-3">
+              <TextInput label="Nombre" value={it.name} onChange={(e) => set({ name: e.target.value })} placeholder="Nombre Apellido" />
+              <Grid>
+                <TextInput
+                  label="Puesto"
+                  value={it.position}
+                  onChange={(e) => set({ position: e.target.value })}
+                  placeholder="Gerente de TI, Empresa X"
+                />
+                <TextInput
+                  label="Número telefónico"
+                  type="tel"
+                  value={it.phone}
+                  onChange={(e) => set({ phone: e.target.value })}
+                  placeholder="+52 55 1234 5678"
+                />
+              </Grid>
+            </div>
+          )}
         />
       );
   }

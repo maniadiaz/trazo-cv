@@ -35,6 +35,7 @@ export type SkillGroup = { id: string; label: string; items: string };
 export type Competency = { id: string; title: string; bullets: string };
 export type Entry = { id: string; title: string; subtitle: string; date: string; description: string };
 export type ListItem = { id: string; text: string };
+export type ReferenceItem = { id: string; name: string; position: string; phone: string };
 
 type SectionBase = { id: string; title: string; hint?: string; hidden?: boolean };
 
@@ -45,7 +46,8 @@ export type Section =
   | (SectionBase & { kind: "skills"; items: SkillGroup[] })
   | (SectionBase & { kind: "competencies"; items: Competency[] })
   | (SectionBase & { kind: "entries"; items: Entry[] })
-  | (SectionBase & { kind: "list"; items: ListItem[] });
+  | (SectionBase & { kind: "list"; items: ListItem[] })
+  | (SectionBase & { kind: "references"; items: ReferenceItem[] });
 
 export type SectionKind = Section["kind"];
 

@@ -144,7 +144,7 @@ export const TEMPLATES: TemplateDef[] = [
       { kind: "skills", title: "Habilidades", hint: H.habilidades },
       { kind: "entries", title: "Logros y premios", hint: "Becas, premios, publicaciones o reconocimientos." },
       { kind: "list", title: "Intereses", hint: "Pocos y concretos: mejor «Maratonista (3 maratones)» que «Deporte»." },
-      { kind: "list", title: "Referencias", hint: "Nombre, cargo y contacto, o simplemente «Disponibles a petición»." },
+      { kind: "references", title: "Referencias", hint: "Personas que pueden hablar de tu trabajo: exjefes, profesores o clientes. Pídeles permiso antes de incluirlas." },
     ],
   },
   {
@@ -199,7 +199,7 @@ export const SECTION_PRESETS: SectionSeed[] = [
   { kind: "entries", title: "Publicaciones", hint: "Título, revista o medio y año." },
   { kind: "list", title: "Idiomas", hint: H.idiomas },
   { kind: "list", title: "Intereses" },
-  { kind: "list", title: "Referencias", hint: "Nombre, cargo y contacto, o «Disponibles a petición»." },
+  { kind: "references", title: "Referencias", hint: "Personas que pueden hablar de tu trabajo: exjefes, profesores o clientes. Pídeles permiso antes de incluirlas." },
   { kind: "text", title: "Texto libre" },
   { kind: "list", title: "Lista libre" },
 ];
@@ -212,6 +212,7 @@ export const KIND_LABEL: Record<SectionKind, string> = {
   competencies: "Competencias",
   entries: "Entradas",
   list: "Lista",
+  references: "Referencias",
 };
 
 export const LAYOUTS: { id: Layout; name: string; description: string }[] = [

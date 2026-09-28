@@ -65,6 +65,13 @@
 .cv-skill + .cv-skill { margin-top: 0.2em; }
 .cv-list { padding-left: 1.15em; }
 
+/* Referencias: tarjetas en rejilla (apiladas en la barra lateral) */
+.cv-refs { display: grid; grid-template-columns: repeat(auto-fill, minmax(52mm, 1fr)); gap: 0.6em 1.5em; }
+.cv-refs-stack { grid-template-columns: 1fr; }
+.cv-ref { break-inside: avoid; }
+.cv-ref strong { display: block; }
+.cv-ref-phone { display: block; color: var(--muted); font-size: 0.95em; }
+
 .cv-empty { opacity: 0.4; }
 .cv-placeholder { font-size: 0.9em; font-style: italic; color: #888; }
 

@@ -6,6 +6,7 @@ import type {
   ExperienceItem,
   ListItem,
   Profile,
+  ReferenceItem,
   Section,
   SectionKind,
   SkillGroup,
@@ -37,6 +38,7 @@ export const newSkillGroup = (): SkillGroup => ({ id: uid(), label: "", items: "
 export const newCompetency = (): Competency => ({ id: uid(), title: "", bullets: "" });
 export const newEntry = (): Entry => ({ id: uid(), title: "", subtitle: "", date: "", description: "" });
 export const newListItem = (): ListItem => ({ id: uid(), text: "" });
+export const newReference = (): ReferenceItem => ({ id: uid(), name: "", position: "", phone: "" });
 
 /** Crea una sección vacía (con un elemento en blanco para empezar a escribir). */
 export function createSection(seed: SectionSeed): Section {
@@ -56,6 +58,8 @@ export function createSection(seed: SectionSeed): Section {
       return { ...base, kind: "entries", items: [newEntry()] };
     case "list":
       return { ...base, kind: "list", items: [newListItem()] };
+    case "references":
+      return { ...base, kind: "references", items: [newReference()] };
   }
 }
 
@@ -67,6 +71,7 @@ export const newItemFor: { [K in SectionKind]: () => unknown } = {
   competencies: newCompetency,
   entries: newEntry,
   list: newListItem,
+  references: newReference,
 };
 
 export function createCv(opts: {
