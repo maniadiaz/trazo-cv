@@ -4,6 +4,7 @@ const fs = require("node:fs/promises");
 
 const isDev = process.argv.includes("--dev");
 const DEV_URL = "http://127.0.0.1:5173";
+const APP_BG = "#07060b";
 
 // ---------- Persistencia: un único JSON en la carpeta de datos del usuario ----------
 
@@ -75,6 +76,23 @@ ipcMain.handle("cv:delete", (_e, id) =>
 
 // ---------- Exportar a PDF: se imprime la ventana con los estilos @media print ----------
 
+/**
+ * Genera el PDF de la ventana. Chromium pinta los márgenes de cada hoja con el color de
+ * fondo de la ventana (no con el del HTML), así que se pone en blanco mientras se imprime.
+ */
+async function renderPdf(win) {
+  win.setBackgroundColor("#ffffff");
+  try {
+    return await win.webContents.printToPDF({
+      pageSize: "A4",
+      printBackground: true,
+      preferCSSPageSize: true,
+    });
+  } finally {
+    win.setBackgroundColor(APP_BG);
+  }
+}
+
 ipcMain.handle("cv:export-pdf", async (event, fileName) => {
   const win = BrowserWindow.fromWebContents(event.sender);
   const safeName = String(fileName || "CV").replace(/[\/:*?"<>|]+/g, "-").trim() || "CV";
@@ -88,11 +106,7 @@ ipcMain.handle("cv:export-pdf", async (event, fileName) => {
     return null;
   }
 
-  const pdf = await event.sender.printToPDF({
-    pageSize: "A4",
-    printBackground: true,
-    preferCSSPageSize: true,
-  });
+  const pdf = await renderPdf(win);
   await fs.writeFile(filePath, pdf);
   win?.webContents.focus();
   return filePath;
@@ -109,7 +123,7 @@ function createWindow() {
     minWidth: 1024,
     minHeight: 680,
     show: false,
-    backgroundColor: "#07060b",
+    backgroundColor: APP_BG,
     title: "Trazo CV",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
@@ -144,6 +158,8 @@ function createWindow() {
 }
 
 if (!isDev) Menu.setApplicationMenu(null);
+
+module.exports = { renderPdf };
 
 app.whenReady().then(() => {
   createWindow();
