@@ -12,6 +12,7 @@ import {
   newSkillGroup,
 } from "../lib/factory";
 import { Button, Checkbox, IconButton, TextArea, TextInput, cn } from "../components/ui";
+import BulletEditor from "../components/BulletEditor";
 
 type Props = {
   section: Section;
@@ -146,8 +147,6 @@ function Items<T extends { id: string }>({
 }
 
 const Grid = ({ children }: { children: ReactNode }) => <div className="grid grid-cols-2 gap-3">{children}</div>;
-const BULLET_TIP = "Un logro por línea. Se mostrarán como viñetas.";
-
 function SectionFields({ section, onChange }: { section: Section; onChange: (s: Section) => void }) {
   switch (section.kind) {
     case "text":
@@ -193,11 +192,11 @@ function SectionFields({ section, onChange }: { section: Section; onChange: (s: 
                   </div>
                 </Grid>
                 {!section.compact && (
-                  <TextArea
-                    label={`Logros y responsabilidades — ${BULLET_TIP}`}
+                  <BulletEditor
+                    label="Logros y responsabilidades"
                     value={it.bullets}
                     onChange={(bullets) => set({ bullets })}
-                    placeholder={"Reduje el tiempo de carga un 40 % migrando a…\nLideré un equipo de 4 personas para…"}
+                    placeholder="Reduje el tiempo de carga un 40 % migrando a…"
                   />
                 )}
               </div>
@@ -269,11 +268,11 @@ function SectionFields({ section, onChange }: { section: Section; onChange: (s: 
           render={(it, set) => (
             <div className="flex flex-col gap-3">
               <TextInput label="Competencia" value={it.title} onChange={(e) => set({ title: e.target.value })} placeholder="Gestión de proyectos" />
-              <TextArea
-                label={`Logros — ${BULLET_TIP}`}
+              <BulletEditor
+                label="Logros"
                 value={it.bullets}
                 onChange={(bullets) => set({ bullets })}
-                placeholder={"Coordiné 3 lanzamientos con equipos de 10+ personas\nReduje retrasos un 25 % con…"}
+                placeholder="Coordiné 3 lanzamientos con equipos de 10+ personas"
               />
             </div>
           )}
