@@ -95,7 +95,7 @@ export default function App() {
           initial={{ opacity: 0, filter: "blur(10px)" }}
           animate={{ opacity: 1, filter: "blur(0px)" }}
           exit={{ opacity: 0, filter: "blur(10px)" }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: 0.18 }}
         >
           {screen}
         </motion.div>

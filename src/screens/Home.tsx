@@ -47,11 +47,11 @@ export default function Home({
             text="Currículum"
             className="-mt-4 font-display text-[clamp(4rem,11vw,9rem)] leading-none font-semibold text-amber-50"
           />
-          <motion.p {...blurIn(0.6)} className="max-w-xl text-lg text-white/65">
+          <motion.p {...blurIn(0.1)} className="max-w-xl text-lg text-white/65">
             Crea un CV distinto para cada oferta. Elige el formato que mejor encaja con tu experiencia y empieza desde
             cero; tus datos de contacto se reutilizan solos.
           </motion.p>
-          <motion.div {...blurIn(0.8)} className="flex flex-wrap gap-3">
+          <motion.div {...blurIn(0.15)} className="flex flex-wrap gap-3">
             <Button variant="primary" className="px-6 py-3 text-base" onClick={() => go({ name: "wizard" })}>
               <FilePlus2 className="size-5" /> Nuevo CV
             </Button>
@@ -63,7 +63,7 @@ export default function Home({
 
         {profileIncomplete && (
           <motion.button
-            {...blurIn(1)}
+            {...blurIn(0.2)}
             onClick={() => go({ name: "profile" })}
             className="mt-10 w-full cursor-pointer rounded-2xl border border-accent/40 bg-accent/10 p-5 text-left backdrop-blur-md transition hover:bg-accent/20"
           >
@@ -76,12 +76,12 @@ export default function Home({
         )}
 
         <section className="mt-16">
-          <motion.h2 {...blurIn(1)} className="font-display text-4xl font-semibold text-amber-50">
+          <motion.h2 {...blurIn(0.2)} className="font-display text-4xl font-semibold text-amber-50">
             Mis CV <span className="text-white/35">({cvs.length})</span>
           </motion.h2>
 
           {sorted.length === 0 ? (
-            <motion.p {...blurIn(1.1)} className="mt-6 text-white/50">
+            <motion.p {...blurIn(0.25)} className="mt-6 text-white/50">
               Todavía no tienes ningún CV. Pulsa «Nuevo CV» para crear el primero.
             </motion.p>
           ) : (
@@ -89,9 +89,9 @@ export default function Home({
               {sorted.map((cv, i) => (
                 <motion.div
                   key={cv.id}
-                  initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+                  initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ delay: 1 + i * 0.07, duration: 0.5 }}
+                  transition={{ delay: 0.25 + Math.min(i, 8) * 0.03, duration: 0.3 }}
                   className="group glow-card overflow-hidden rounded-xl border border-white/10 bg-black/60 transition-transform duration-300 hover:scale-[1.03]"
                 >
                   <button

@@ -93,7 +93,7 @@ export default function ProfileScreen({
               Bienvenido a Trazo CV
             </motion.p>
             <AnimatedTitle text="Empecemos por ti" className="mt-1 font-display text-6xl font-semibold text-amber-50" />
-            <motion.p {...blurIn(0.5)} className="mt-3 max-w-xl text-white/60">
+            <motion.p {...blurIn(0.1)} className="mt-3 max-w-xl text-white/60">
               Llena tus datos una sola vez: aparecerán automáticamente en todos tus CV y en cada uno eliges cuáles mostrar.
               Puedes cambiarlos cuando quieras desde «Mis datos».
             </motion.p>
@@ -109,7 +109,7 @@ export default function ProfileScreen({
           </>
         )}
 
-        <motion.div {...blurIn(firstRun ? 0.6 : 0.2)}>
+        <motion.div {...blurIn(firstRun ? 0.15 : 0.1)}>
           <Glass className="mt-8 grid grid-cols-2 gap-4 p-6">
             <TextInput
               label="Nombre completo"
@@ -150,7 +150,7 @@ export default function ProfileScreen({
           </Glass>
         </motion.div>
 
-        <motion.div {...blurIn(firstRun ? 0.7 : 0.3)}>
+        <motion.div {...blurIn(firstRun ? 0.2 : 0.15)}>
           <Glass className="mt-6 p-6">
             <div className="flex items-center gap-2 text-amber-50">
               <Link2 className="size-5 text-accent-soft" />

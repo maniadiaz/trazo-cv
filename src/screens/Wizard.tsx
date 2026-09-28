@@ -62,11 +62,11 @@ export default function Wizard({
           {step === 1 ? (
             <motion.div key="s1" exit={{ opacity: 0, filter: "blur(8px)", x: -30 }} transition={{ duration: 0.25 }}>
               <AnimatedTitle text="Nuevo CV" className="mt-6 font-display text-7xl font-semibold text-amber-50" />
-              <motion.p {...blurIn(0.4)} className="mt-3 text-white/60">
+              <motion.p {...blurIn(0.1)} className="mt-3 text-white/60">
                 1 · ¿Cuál es tu situación? Te recomendamos el formato que mejor te presenta. (Opcional)
               </motion.p>
 
-              <motion.div {...blurIn(0.5)} className="mt-5 flex flex-wrap gap-2">
+              <motion.div {...blurIn(0.12)} className="mt-5 flex flex-wrap gap-2">
                 {SITUATIONS.map((s) => (
                   <button
                     key={s.id}
@@ -83,7 +83,7 @@ export default function Wizard({
                 ))}
               </motion.div>
 
-              <motion.p {...blurIn(0.6)} className="mt-10 text-white/60">
+              <motion.p {...blurIn(0.15)} className="mt-10 text-white/60">
                 2 · Elige el tipo de CV
               </motion.p>
 
@@ -97,7 +97,7 @@ export default function Wizard({
                       key={t.id}
                       initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      transition={{ delay: 0.6 + i * 0.06, layout: { type: "spring", stiffness: 200, damping: 26 } }}
+                      transition={{ delay: 0.18 + i * 0.03, duration: 0.3, layout: { type: "spring", stiffness: 200, damping: 26 } }}
                       onClick={() => setTemplateId(t.id)}
                       className={cn(
                         "glow-card relative flex cursor-pointer flex-col rounded-xl border bg-black/50 p-5 text-left transition-colors",
@@ -138,7 +138,7 @@ export default function Wizard({
                   layout
                   initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{ delay: 0.6 + TEMPLATES.length * 0.06 }}
+                  transition={{ delay: 0.18 + TEMPLATES.length * 0.03, duration: 0.3 }}
                   onClick={() => setTemplateId(BLANK_TEMPLATE_ID)}
                   className={cn(
                     "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed p-5 text-center transition-colors",
