@@ -22,6 +22,14 @@ npm run dist:portable   # release/TrazoCV-Portable-<versión>.exe (sin instalar)
 - Al desinstalar no se borran los CV guardados.
 - El ícono sale de `build/icon.png` (1024×1024).
 - Para publicar una versión nueva, sube `"version"` en `package.json` antes de compilar.
+### Publicar una versión (automático)
+
+1. Sube `"version"` en `package.json` (p. ej. `1.2.0`) y haz commit.
+2. Crea y sube la etiqueta: `git tag v1.2.0 && git push origin main --tags`.
+3. GitHub Actions ([.github/workflows/release.yml](.github/workflows/release.yml)) compila el instalador y el portable en Windows y los adjunta a la Release `v1.2.0`.
+
+Para recompilar una versión ya publicada: pestaña **Actions → Release Windows → Run workflow** e indica la etiqueta.
+
 - El .exe no está firmado digitalmente: Windows SmartScreen mostrará «Windows protegió su PC» → «Más información» → «Ejecutar de todas formas». Para quitar ese aviso hace falta un certificado de firma de código.
 
 1. **Mis datos**: nombre, profesión, correo, teléfono, ubicación y enlaces (LinkedIn, GitHub, portafolio…). Se escriben una sola vez y se reutilizan en todos los CV.

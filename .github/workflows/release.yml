@@ -1,0 +1,85 @@
+# Compila el instalador y el portable de Windows y los adjunta a la Release.
+#
+# - Al subir una etiqueta de versión (git tag v1.2.0 && git push --tags) se ejecuta solo.
+# - Desde la pestaña Actions → "Release Windows" → "Run workflow" se puede recompilar
+#   una versión ya publicada indicando su etiqueta.
+name: Release Windows
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Etiqueta a compilar (p. ej. v1.1.4)"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # Sin certificado de firma: que electron-builder no intente buscar uno.
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Comprobar que la etiqueta coincide con package.json
+        shell: bash
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "::error::La etiqueta $TAG no coincide con la versión de package.json ($VERSION)"
+            exit 1
+          fi
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Compilar la interfaz
+        run: npm run build
+
+      - name: Crear instalador y portable
+        run: npx electron-builder --win nsis portable --publish never
+
+      - name: Comprobar los ejecutables
+        shell: bash
+        run: |
+          ls -la release/*.exe
+          for f in release/*.exe; do
+            SIZE=$(stat -c %s "$f")
+            if [ "$SIZE" -lt 50000000 ]; then
+              echo "::error::$f pesa solo $SIZE bytes; la compilación está incompleta"
+              exit 1
+            fi
+          done
+
+      - name: Subir a la Release
+        shell: bash
+        run: |
+          if ! gh release view "$TAG" > /dev/null 2>&1; then
+            gh release create "$TAG" --title "Trazo CV ${TAG#v}" --generate-notes
+          fi
+          gh release upload "$TAG" release/*.exe --clobber
+
+      - name: Guardar ejecutables como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: trazo-cv-${{ env.TAG }}
+          path: release/*.exe
+          retention-days: 14
