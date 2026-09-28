@@ -8,7 +8,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import Wizard from "./screens/Wizard";
 import Editor from "./screens/Editor";
 
-export type View = { name: "home" } | { name: "profile" } | { name: "wizard" } | { name: "editor"; id: string };
+export type View = { name: "home" } | { name: "profile"; firstRun?: boolean } | { name: "wizard" } | { name: "editor"; id: string };
 
 export default function App() {
   const [data, setData] = useState<AppData | null>(null);
@@ -16,7 +16,15 @@ export default function App() {
   const [view, setView] = useState<View>({ name: "home" });
 
   useEffect(() => {
-    api.load().then(setData, (e) => setError(String(e)));
+    api.load().then(
+      (d) => {
+        setData(d);
+        // Primera vez (o datos vacíos): se abre directamente «Mis datos».
+        const p = d.profile;
+        if (!p.name.trim() && !p.email.trim() && !p.phone.trim()) setView({ name: "profile", firstRun: true });
+      },
+      (e) => setError(String(e)),
+    );
   }, []);
 
   const saveProfile = useCallback(async (profile: Profile) => {
@@ -62,7 +70,7 @@ export default function App() {
       screen = <Home data={data} go={setView} onDelete={removeCv} onDuplicate={copyCv} />;
       break;
     case "profile":
-      screen = <ProfileScreen profile={data.profile} onSave={saveProfile} go={setView} />;
+      screen = <ProfileScreen profile={data.profile} onSave={saveProfile} go={setView} firstRun={view.firstRun} />;
       break;
     case "wizard":
       screen = <Wizard profile={data.profile} onCreate={addCv} go={setView} />;

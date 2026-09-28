@@ -11,6 +11,19 @@ npm start       # compila y abre la app
 npm run dist    # genera el instalador de Windows en release/
 ```
 
+## Crear el instalador
+
+```bash
+npm run dist            # release/TrazoCV-Setup-<versión>.exe  (instalador)
+npm run dist:portable   # release/TrazoCV-Portable-<versión>.exe (sin instalar)
+```
+
+- El instalador está en español, deja elegir la carpeta y crea accesos directos en el escritorio y el menú Inicio.
+- Al desinstalar no se borran los CV guardados.
+- El ícono sale de `build/icon.png` (1024×1024).
+- Para publicar una versión nueva, sube `"version"` en `package.json` antes de compilar.
+- El .exe no está firmado digitalmente: Windows SmartScreen mostrará «Windows protegió su PC» → «Más información» → «Ejecutar de todas formas». Para quitar ese aviso hace falta un certificado de firma de código.
+
 1. **Mis datos**: nombre, profesión, correo, teléfono, ubicación y enlaces (LinkedIn, GitHub, portafolio…). Se escriben una sola vez y se reutilizan en todos los CV.
 2. **Nuevo CV**: indica tu situación (opcional) y la app te recomienda un formato:
    | Formato | Para quién |

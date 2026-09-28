@@ -1,6 +1,6 @@
 {
   "name": "trazo-cv",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "description": "App de escritorio para crear CV (cronológico, funcional, mixto, Harvard, Cambridge) con exportación a PDF. Electron + React + TypeScript.",
   "main": "electron/main.cjs",
@@ -9,34 +9,56 @@
     "dev": "concurrently -k -n vite,electron \"vite\" \"wait-on tcp:127.0.0.1:5173 && electron . --dev\"",
     "build": "tsc --noEmit && vite build",
     "start": "npm run build && electron .",
-    "dist": "npm run build && electron-builder --win"
+    "dist": "npm run build && electron-builder --win",
+    "dist:portable": "npm run build && electron-builder --win portable"
   },
   "build": {
     "appId": "com.maniadiaz.trazocv",
     "productName": "Trazo CV",
+    "copyright": "© 2026 maniadiaz",
     "files": [
       "dist/**",
       "electron/**",
       "package.json"
     ],
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "build"
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Trazo CV",
+      "installerLanguages": [
+        "es_ES"
+      ],
+      "language": "3082",
+      "artifactName": "TrazoCV-Setup-${version}.exe",
+      "deleteAppDataOnUninstall": false
+    },
+    "portable": {
+      "artifactName": "TrazoCV-Portable-${version}.exe"
     }
   },
-  "dependencies": {
+  "devDependencies": {
     "@fontsource-variable/eb-garamond": "^5.3.0",
     "@fontsource-variable/inter": "^5.3.0",
     "@fontsource-variable/source-serif-4": "^5.3.0",
     "@fontsource/cormorant-garamond": "^5.3.0",
-    "framer-motion": "^13.4.4",
-    "lucide-react": "^1.48.0",
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
-  },
-  "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
@@ -44,6 +66,10 @@
     "concurrently": "^10.0.5",
     "electron": "^44.4.5",
     "electron-builder": "^26.15.3",
+    "framer-motion": "^13.4.4",
+    "lucide-react": "^1.48.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
     "vite": "^8.3.1",
@@ -52,5 +78,6 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/maniadiaz/trazo-cv.git"
-  }
+  },
+  "author": "maniadiaz"
 }

@@ -106,7 +106,7 @@ function createWindow() {
     minHeight: 680,
     show: false,
     backgroundColor: "#07060b",
-    title: "Generador de CV",
+    title: "Trazo CV",
     webPreferences: {
       preload: path.join(__dirname, "preload.cjs"),
       contextIsolation: true,

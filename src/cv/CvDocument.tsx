@@ -34,7 +34,8 @@ const range = (start: string, end: string, current = false) =>
 
 const join = (...parts: string[]) => parts.map((p) => p.trim()).filter(Boolean).join(", ");
 
-export const prettyUrl = (url: string) => url.trim().replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
+export const prettyUrl = (url: string) =>
+  url.trim().replace(/^https?:\/\/(www\.)?/i, "").replace(/^www\./i, "").replace(/\/+$/, "");
 const toHref = (url: string) => (/^(https?:|mailto:)/.test(url.trim()) ? url.trim() : `https://${url.trim()}`);
 
 const isFilled = (item: object) =>

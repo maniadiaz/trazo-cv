@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, type ButtonHTMLAttributes, type InputHTMLAttri
 
 export const cn = (...c: (string | false | null | undefined)[]) => c.filter(Boolean).join(" ");
 
-const fieldBase =
+export const fieldBase =
   "w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-accent-soft/70 focus:bg-white/[0.07] focus:ring-2 focus:ring-accent/30";
 
 export function Field({ label, children, className }: { label: string; children: ReactNode; className?: string }) {
